@@ -42,56 +42,56 @@ public:
     }
 };
 
-class node{
+class user_node{
 public:
     User_id id;
     std::string password;
     int Privilege;
 
 
-    node() = default;
+    user_node() = default;
 
-    node(const User_id &Name, const std::string pass,int rank) {
+    user_node(const User_id &Name, const std::string pass,int rank) {
         id = Name;
         password = pass;
         Privilege=rank;
     }
 
-    node(const node &x) {
+    user_node(const user_node &x) {
         id = x.id;
         password = x.password;
         Privilege=x.Privilege;
     }
 
-    ~node() = default;
+    ~user_node() = default;
 
-    friend bool operator<(const node &a, const node &b) {
+    friend bool operator<(const user_node &a, const user_node &b) {
         return (a.id < b.id);
     }
 
-    friend bool operator>(const node &a, const node &b) {
+    friend bool operator>(const user_node &a, const user_node &b) {
         return !(a.id < b.id);
     }
 
-    friend bool operator==(const node &a, const node &b) {
+    friend bool operator==(const user_node &a, const user_node &b) {
         return a.id==b.id;
     }
 
-    friend bool operator<=(const node &a, const node &b) {
+    friend bool operator<=(const user_node &a, const user_node &b) {
         return !(a > b);
     }
 
-    friend bool operator>=(const node &a, const node &b) {
+    friend bool operator>=(const user_node &a, const user_node &b) {
         return !(a < b);
     }
 };
 
 struct user_block {
-    node sup;
-    node inf;
+    user_node sup;
+    user_node inf;
     int Next = -1;
     int size = 0;
-    node data[1000];
+    user_node data[1000];
 };
 
 class user {
@@ -102,7 +102,7 @@ public:
     std::fstream file;
 
    user(){
-        file.open("file");
+        file.open("user");
         if (file){
             file.seekg(0);
             file.read(reinterpret_cast<char*>(&block_number),sizeof(int));
@@ -118,7 +118,7 @@ public:
             user_block tmp;
             file.write(reinterpret_cast<char*>(&tmp),sizeof(tmp));
             User_id k("root");
-            node t(k,"sjtu",7);
+            user_node t(k,"sjtu",7);
             insert(t);
         }
     }
@@ -129,7 +129,7 @@ public:
         file.close();
     }
 
-    void insert(const node& data){
+    void insert(const user_node& data){
         static user_block now;
         if (block_number == -1){
             ++block_number;
@@ -176,7 +176,7 @@ public:
         }
     }
 
-    node find(const User_id& index_){
+    user_node find(const User_id& index_){
         static user_block now;
         int i = 0;
         while (i != -1){
@@ -199,7 +199,7 @@ public:
             i = now.Next;
         }
         User_id k("root");
-        node t(k,"sjtu",7);
+        user_node t(k,"sjtu",7);
         return t;
     }
 
@@ -229,7 +229,7 @@ private:
         file.write(reinterpret_cast<const char *>(&data), sizeof(user_block));
     }
 
-    void inner_insert(int pos,const node& data){
+    void inner_insert(int pos,const user_node& data){
         static user_block now;
         read_data(pos,now);
         int tmp = -1;
