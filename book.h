@@ -7,38 +7,38 @@
 #include <cstring>
 #include <fstream>
 
-class book {
-    char name_[62];
+class bookbook {
 public:
-    book() = default;
+    char name_[62];
+    bookbook() = default;
 
-    book(const std::string a) {
+    bookbook(const std::string a) {
         int l = a.size();
         for (int i = 0; i < l; i++) name_[i] = a[i];
         name_[l] = '\0';
     }
 
-    friend bool operator<(const book &obj1, const book &obj2) {
+    friend bool operator<(const bookbook &obj1, const bookbook &obj2) {
         return (strcmp(obj1.name_, obj2.name_) < 0);
     }
 
-    friend bool operator==(const book &obj1, const book &obj2) {
+    friend bool operator==(const bookbook &obj1, const bookbook &obj2) {
         return (strcmp(obj1.name_, obj2.name_) == 0);
     }
 
-    friend bool operator<=(const book &obj1, const book &obj2) {
+    friend bool operator<=(const bookbook &obj1, const bookbook &obj2) {
         return (obj1 < obj2 || obj1 == obj2);
     }
 
-    friend bool operator>(const book &obj1, const book &obj2) {
+    friend bool operator>(const bookbook &obj1, const bookbook &obj2) {
         return (!(obj1 <= obj2));
     }
 
-    friend bool operator>=(const book &obj1, const book &obj2) {
+    friend bool operator>=(const bookbook &obj1, const bookbook &obj2) {
         return (obj1 > obj2 || obj1 == obj2);
     }
 
-    friend std::ostream &operator<<(std::ostream &x, const book &y) {
+    friend std::ostream &operator<<(std::ostream &x, const bookbook &y) {
         x << y.name_;
         return x;
     }
@@ -46,7 +46,7 @@ public:
 
 class book_node {
 public:
-    book index;
+    bookbook index;
     std::string Bookname;
     std::string Author;
     std::string Keyword;
@@ -55,7 +55,7 @@ public:
 
     book_node() = default;
 
-    book_node(const book &Name, const std::string bn, const std::string au, int qu, double pr) {
+    book_node(const bookbook &Name, const std::string bn, const std::string au, int qu, double pr) {
         index = Name;
         Bookname = bn;
         Author = au;
@@ -164,16 +164,16 @@ public:
         inner_insert(position_now, data);
     }
 
-    void del(const book_node &data) {
+    void del(const bookbook &index_) {
         static book_block now;
         readblock(0, now);
         int position_now = 0;
         while (position_now != -1) {
-            if (data >= now.inf && data <= now.sup) {
-                inner_deltete(position_now, data);
+            if (index_ >= now.inf.index && index_ <= now.sup.index) {
+                inner_deltete(position_now, index_);
                 return;
             }
-            if (data < now.inf) {
+            if (index_ < now.inf.index) {
                 return;
             }
             position_now = now.Next;
@@ -181,7 +181,7 @@ public:
         }
     }
 
-    void find(const book &index_) {
+    book_node find(const bookbook &index_) {
         static book_block now;
         int i = 0;
         bool has = false;
@@ -196,7 +196,7 @@ public:
                 for (int j = 0; j < now.size; j++) {
                     if (now.data[j].index == index_) {
                         has = true;
-                        std::cout << now.data[j].index << ' ';
+                        return now.data[j];
                     }
                 }
             } else if (index_ < now.inf.index) {
@@ -204,11 +204,9 @@ public:
             }
             i = now.Next;
         }
-        if (!has) {
-            std::cout << "null" << std::endl;
-        } else {
-            std::cout << std::endl;
-        }
+        bookbook t(index_);
+        book_node k(t,"","",-1,-1);
+        return k;
     }
 
 private:
@@ -267,14 +265,14 @@ private:
         }
     }
 
-    void inner_deltete(int pos, const book_node &data) {
+    void inner_deltete(int pos, const bookbook &data) {
         static book_block now;
         read_data(pos, now);
         for (int i = 0; i < now.size; i++) {
-            if (now.data[i] > data) {
+            if (now.data[i].index > data) {
                 break;
             }
-            if (now.data[i] == data) {
+            if (now.data[i].index == data) {
                 for (int j = i + 1; j < now.size; ++j) {
                     now.data[j - 1] = now.data[j];
                 }
