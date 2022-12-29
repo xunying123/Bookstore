@@ -94,23 +94,23 @@ struct user_block {
     user_node data[1000];
 };
 
-class user {
+class user_store {
 public:
     const int max = 800;
     const int min = 400;
     int block_number = -1;
     std::fstream file;
 
-   user(){
+   user_store (){
         file.open("user");
         if (file){
             file.seekg(0);
             file.read(reinterpret_cast<char*>(&block_number),sizeof(int));
         }
         else {
-            file.open("file",std::fstream::out);
+            file.open("user",std::fstream::out);
             file.close();
-            file.open("file");
+            file.open("user");
             block_number = -1;
             file.seekp(0);
             file.write(reinterpret_cast<char*>(&block_number),sizeof(int));
@@ -123,7 +123,7 @@ public:
         }
     }
 
-    ~user(){
+    ~user_store (){
         file.seekp(0);
         file.write(reinterpret_cast<char*>(&block_number),sizeof(block_number));
         file.close();
