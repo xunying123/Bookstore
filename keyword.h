@@ -108,15 +108,15 @@ public:
     std::fstream file;
 
     key_store(){
-        file.open("file");
+        file.open("keyword");
         if (file){
             file.seekg(0);
             file.read(reinterpret_cast<char*>(&block_number),sizeof(int));
         }
         else {
-            file.open("file",std::fstream::out);
+            file.open("keyword",std::fstream::out);
             file.close();
-            file.open("file");
+            file.open("keyword");
             block_number = -1;
             file.seekp(0);
             file.write(reinterpret_cast<char*>(&block_number),sizeof(int));
