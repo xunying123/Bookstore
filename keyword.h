@@ -7,8 +7,8 @@
 #include <fstream>
 
 class keyword {
-    char name_[62];
 public:
+    char name_[62];
     keyword()=default;
 
     keyword(const std::string a) {
@@ -179,10 +179,9 @@ public:
         }
     }
 
-    void find(const keyword& index_){
+    void find(const keyword& index_,std::set<std::string> &sett){
         static key_block now;
         int i = 0;
-        bool has = false;
         while (i != -1){
             readblock(i,now);
             if (now.size == 0){
@@ -193,8 +192,8 @@ public:
                 read_data(i,now);
                 for (int j = 0;j < now.size;j++){
                     if (now.data[j].index == index_){
-                        has = true;
-                        std::cout << now.data[j].ISBN << ' ';
+                        std::string nn=now.data[j].ISBN.name_;
+                        sett.insert(nn);
                     }
                 }
             }
@@ -202,12 +201,6 @@ public:
                 break;
             }
             i = now.Next;
-        }
-        if (!has){
-            std::cout << "null"<<std::endl;
-        }
-        else {
-            std::cout <<std::endl;
         }
     }
 

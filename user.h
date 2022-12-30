@@ -84,6 +84,7 @@ public:
     friend bool operator>=(const user_node &a, const user_node &b) {
         return !(a < b);
     }
+
 };
 
 struct user_block {
@@ -199,7 +200,7 @@ public:
             i = now.Next;
         }
         User_id k("root");
-        user_node t(k,"sjtu",7);
+        user_node t(k,"",7);
         return t;
     }
 
@@ -238,9 +239,6 @@ private:
                 tmp = i;
                 break;
             }
-            if (data.id == now.data[i].id)
-                now.data[i]=data;
-                return;
         }
         now.size++;
         if (tmp == -1){

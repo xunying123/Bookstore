@@ -184,7 +184,6 @@ public:
     book_node find(const bookbook &index_) {
         static book_block now;
         int i = 0;
-        bool has = false;
         while (i != -1) {
             readblock(i, now);
             if (now.size == 0) {
@@ -195,7 +194,6 @@ public:
                 read_data(i, now);
                 for (int j = 0; j < now.size; j++) {
                     if (now.data[j].index == index_) {
-                        has = true;
                         return now.data[j];
                     }
                 }
@@ -209,6 +207,23 @@ public:
         return k;
     }
 
+    void book_out () {
+        static book_block now;
+        int i = 0;
+        while(i!=-1) {
+            readblock(i, now);
+            if (now.size == 0) {
+                i = now.Next;
+                continue;
+            }
+            read_data(i, now);
+            for (int j = 0; j < now.size; j++) {
+                std::cout << now.data[j].index.name_ << '\t' << now.data[j].Bookname << "\t" << now.data[j].Author << "\t"
+                          << now.data[j].Keyword << '\t' << now.data[j].Price << '\t' << now.data[j].Quantity << std::endl;
+            }
+            i = now.Next;
+        }
+    }
 private:
 
     void readblock(int pos, book_block &data) {
